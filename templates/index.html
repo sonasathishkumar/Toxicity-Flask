@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Toxicity Detection</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f9fc; margin: 0; padding: 0; }
+        .navbar { background: #2c3e50; padding: 15px; display: flex; justify-content: space-between; }
+        .navbar h1 { color: white; margin: 0; font-size: 20px; }
+        .navbar a { color: #ecf0f1; margin-left: 15px; text-decoration: none; }
+        .navbar a:hover { color: #1abc9c; }
+        .container { width: 70%; margin: 30px auto; background: white; padding: 20px; border-radius: 10px;
+                     box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+        textarea { width: 100%; min-height: 120px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+        button { margin-top: 10px; padding: 10px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
+        .btn { background: #1abc9c; color: white; }
+        .btn:hover { background: #16a085; }
+        .result { margin-top: 15px; padding: 15px; background: #ecf9f7; border-left: 6px solid #1abc9c; }
+        .highlighted { margin-top: 15px; padding: 15px; background: #fbfbfb; border-radius: 8px; border: 1px solid #eee; }
+        .toxic { color: red; font-weight: bold; }
+        .suggestions { margin-top: 15px; padding: 12px; background: #fff8e1; border-left: 5px solid #f39c12; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Toxicity Detector</h1>
+        <div>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Enter Text</h2>
+        <form method="POST">
+            <textarea name="text" placeholder="Type your sentence here...">{{ text }}</textarea><br>
+            <button class="btn" type="submit">Predict</button>
+        </form>
+
+        {% if prediction %}
+            <div class="result">
+                <h3>Result:</h3>
+                <p><strong>{{ prediction }}</strong></p>
+            </div>
+        {% endif %}
+
+        {% if highlighted_text %}
+            <div class="highlighted">
+                <h4>Highlighted Text:</h4>
+                <p>{{ highlighted_text|safe }}</p>
+            </div>
+        {% endif %}
+
+        {% if suggestions %}
+            <div class="suggestions">
+                <h4>Safer Suggestions:</h4>
+                <ul>
+                    {% for word, replacement in suggestions.items() %}
+                        <li><span class="toxic">{{ word }}</span> → <b>{{ replacement }}</b></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
